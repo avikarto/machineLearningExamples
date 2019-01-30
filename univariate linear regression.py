@@ -51,14 +51,3 @@ print(m*3300+b)  # the linear model should predict this explicitly through the l
 # What if I wanted to predict a set of prices all at once?
 
 line.predict(np.array([3000, 3500, 5000]).reshape(-1, 1))
-
-# %%
-pass
-# %%
-pass
-# %%
-pass
-# %%
-pass
-# %%
-pass
