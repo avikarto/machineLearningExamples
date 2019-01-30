@@ -1,3 +1,6 @@
+# This code was written in the Atom IDE with Hydrogen as a Jupyter environment
+# The # %% lines are cell breaks in Hydrogen
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
