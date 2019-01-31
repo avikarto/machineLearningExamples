@@ -59,7 +59,7 @@ linReg.fit(df[['Area', 'Bedrooms', 'Age']], df.Price)
 
 # Finding numerical coefficients for the model: Price = c1*Area + c2*Bedrooms + c2*Age + intercept
 
-print(linReg.coef_)
+print(linReg.coef_)  # 3 outputs are c1, c2, c3
 print(linReg.intercept_)
 # %%
 
