@@ -45,7 +45,7 @@ for i in dataframes:
 
 for i in [googTrain, googTest]:
     i.drop(columns=['Volume', 'Adj Close', 'High', 'Low'], inplace=True)
-googTrain
+googTrain.head(1)
 # %%
 
 # At this point, I want to find which parameters most strongly influence Google's closing price.  I'll
@@ -59,8 +59,40 @@ corrDF = pd.DataFrame(data={
 })
 corrDF.corr()[['googClose']].sort_values(by='googClose', ascending=False)
 
-# Google's closing price seems to be most strongly correlated with the actions of Amazon, followed by Microsoft,
+# Google's closing price seems to be most strongly correlated with the behavior of Amazon, followed by Microsoft,
 # and lastly Apple.
+
+# %%
+
+# Let's see if a linear model is reasonable.
+
+names = ['Google', 'Apple', 'Amazon', 'Microsoft']  # for index i
+vars = ['Open', 'Close', 'High', 'Low']  # for index j
+figure, plots = plt.subplots(nrows=4, ncols=4)
+figure.set_figheight(20)
+figure.set_figwidth(20)
+for i in range(4):
+    name = [googTrain, aaplTrain, amznTrain, msftTrain][i]
+    for j in range(4):
+        plots[i, j].set_ylabel('Google Close Price')
+        if j == 0:
+            plots[i, j].set_xlabel(names[i]+' open price')
+            plots[i, j].scatter(name.Open, googTrain.Close)
+        elif j == 1 and i != 0:
+            plots[i, j].set_xlabel(names[i]+' high price')
+            plots[i, j].scatter(name.High, googTrain.Close)
+        elif j == 2 and i != 0:
+            plots[i, j].set_xlabel(names[i]+' low price')
+            plots[i, j].scatter(name.Low, googTrain.Close)
+        elif j == 3 and i != 0:
+            plots[i, j].set_xlabel(names[i]+' Close price')
+            plots[i, j].scatter(name.Close, googTrain.Close)
+        if i == 0 and j != 0:
+            plots[i, j].axis('off')
+plt.show()
+
+# Everything looks pretty linear, aside from Apple.  This was already determined to have the lowest correlation with
+# Google's closing price, though, so I'll just roll with a linear model and see how it does.
 
 # %%
 # Time to craft the training DFs.
@@ -87,6 +119,3 @@ y_test = googTest.Close
 linModel.score(x_test, y_test)
 
 # Still pretty good!
-
-# %%
-pass
