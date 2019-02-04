@@ -7,6 +7,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sklearn.linear_model as skll
 %matplotlib inline
 
 # %%
@@ -44,7 +45,7 @@ for i in dataframes:
 
 for i in [googTrain, googTest]:
     i.drop(columns=['Volume', 'Adj Close', 'High', 'Low'], inplace=True)
-
+googTrain
 # %%
 
 # At this point, I want to find which parameters most strongly influence Google's closing price.  I'll
@@ -61,4 +62,31 @@ corrDF.corr()[['googClose']].sort_values(by='googClose', ascending=False)
 # Google's closing price seems to be most strongly correlated with the actions of Amazon, followed by Microsoft,
 # and lastly Apple.
 
-# to be continued...
+# %%
+# Time to craft the training DFs.
+x_train = corrDF.drop(columns='googClose')
+y_train = corrDF[['googClose']]
+
+# Let's test a linear model and see how it does
+
+linModel = skll.LinearRegression()
+linModel.fit(x_train, y_train)
+print(linModel.score(x_train, y_train))
+
+# That seems to have worked pretty well
+
+# %%
+# How does the testing data hold up?
+x_test = pd.DataFrame(data={
+    'googOpen': googTest.Open, 'amznOpen': amznTest.Open, 'msftOpen': msftTest.Open, 'aaplOpen': aaplTest.Open,
+    'amznClose': amznTest.Close, 'msftClose': msftTest.Close, 'aaplClose': aaplTest.Close,
+    'amznHigh': amznTest.High, 'msftHigh': msftTest.High, 'aaplHigh': aaplTest.High,
+    'amznLow': amznTest.Low, 'msftLow': msftTest.Low, 'aaplLow': aaplTest.Low
+})
+y_test = googTest.Close
+linModel.score(x_test, y_test)
+
+# Still pretty good!
+
+# %%
+pass
