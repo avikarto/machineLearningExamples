@@ -4,7 +4,13 @@ This project seeks to predict the closing price of Google stock based on the beh
 
 4 years of training data (Jan 1 2014 - Jan 1 2018) was impored from fininace.yahoo.com to train the linear regression, which was tested against one year of test data (Jan 2 2018 - Jan 2 2019), for each of the 4 stocks.
 
+Part 1: Predicting closing price of Google, based on same-day behavior of Apple, Amazon, and Microsoft
+
 sklearn.linear_model.score returned a 96.82% model accuracy when the trained model was run on the test data.
 
-Note:
+Notes:
 - Apple's behavior is fairly uncorrelated with Google's closing price, but still behaves somewhat linearly and is included in the model.
+
+Part 2: Predicting closing price of Google, based on previous-day behavior of Apple, Amazon, and Microsoft.  Effectively, this predicts "tomorrow"'s stock price based on "today"'s information - much more useful in real application than the result of part 1.
+
+- WORK IN PROGRESS
