@@ -13,7 +13,7 @@ Part 1: Predicting closing price of Google, based on same-day behavior of Apple,
 sklearn.linear_model.score returned a 96.82% model accuracy when the trained model was run on the test data.
 
 Notes:
-- Apple's behavior is fairly uncorrelated with Google's closing price, but still behaves somewhat linearly and is included in the model.
+- Apple's same-day behavior is fairly uncorrelated with Google's closing price, but still behaves somewhat linearly and is included in the model.
 
 --------------------------------------------------------------------
 --------------------------------------------------------------------
