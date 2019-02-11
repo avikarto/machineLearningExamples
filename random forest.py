@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn.model_selection as sklms
-from sklearn.svm import SVC
 from sklearn.datasets import load_digits
 from sklearn.ensemble import RandomForestClassifier
 %matplotlib inline
