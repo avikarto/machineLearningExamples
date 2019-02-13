@@ -40,6 +40,10 @@ for i in dataframes:
 
 # %%
 
+############################
+########### Part 1 #########
+############################
+
 # I'll assume that when predicting Google's price at close, its trading volume, high price, low price, and
 # adjusted close price will not be known a priori.  As such, these columns will be dropped from GOOG DFs.
 
@@ -119,3 +123,74 @@ y_test = googTest.Close
 linModel.score(x_test, y_test)
 
 # Still pretty good!
+
+# %%
+
+############################
+########### Part 2 #########
+############################
+
+# In this part, I want to predict Tomorrow's closing price of Google based on what the 4 stocks did Today.
+# In this case, its trading volume, high price, low price, and close price of the previous day becomes relevant.
+# Since I dropped a lot of this data previously, I'll reimport the DFs for google
+
+googTrain2 = pd.read_csv('GOOG_train.csv')
+googTest2 = pd.read_csv('GOOG_test.csv')
+for g in [googTrain2, googTest2]:
+    g['nextClose'] = g.Close.copy()
+
+# %%
+
+# The primary changes that need to happen in this part is that the target values (nextClose) need to be redefined by
+#   shifting Google's nextClose columns back one day across all data, and then dropping the last element:
+
+lenTrain = len(googTrain2)
+lenTest = len(googTest2)
+print('Train tail...', googTrain2.nextClose.tail(2).values)
+print('Test head...', googTest2.nextClose.head(2).values)
+print('Test tail...', googTest2.nextClose.tail(2).values)
+
+for i in range(lenTrain):
+    if i != lenTrain-1:
+        googTrain2.loc[i, 'nextClose'] = googTrain2.loc[i+1, 'nextClose']
+    else:
+        googTrain2.loc[i, 'nextClose'] = googTest2.loc[0, 'nextClose']
+
+print('New train tail...', googTrain2.nextClose.tail(2).values)
+
+for i in range(lenTest-1):
+        googTest2.loc[i, 'nextClose'] = googTest2.loc[i+1, 'nextClose']
+
+print('New test head...', googTest2.nextClose.head(2).values)
+
+googTest2.drop([lenTest-1], inplace=True)
+
+print('New test tail...', googTest2.nextClose.tail(2).values)
+print('old test length: ', lenTest, '.... new test length: ', len(googTest2))
+
+# %%
+
+# Now, the parameters need to be appended with additional information regarding Google.
+
+xTrain2 = pd.DataFrame(data={  # the now-previous day info for all compaines
+    'googOpen': googTrain2.Open, 'amznOpen': amznTrain.Open, 'msftOpen': msftTrain.Open, 'aaplOpen': aaplTrain.Open,
+    'googClose': googTrain2.Close, 'amznClose': amznTrain.Close, 'msftClose': msftTrain.Close, 'aaplClose': aaplTrain.Close,
+    'googHigh': googTrain2.High, 'amznHigh': amznTrain.High, 'msftHigh': msftTrain.High, 'aaplHigh': aaplTrain.High,
+    'googLow': googTrain2.Low, 'amznLow': amznTrain.Low, 'msftLow': msftTrain.Low, 'aaplLow': aaplTrain.Low
+})
+xTest2 = pd.DataFrame(data={  # the now-previous day info for all compaines
+    'googOpen': googTest2.Open, 'amznOpen': amznTest.Open, 'msftOpen': msftTest.Open, 'aaplOpen': aaplTest.Open,
+    'googClose': googTest2.Close, 'amznClose': amznTest.Close, 'msftClose': msftTest.Close, 'aaplClose': aaplTest.Close,
+    'googHigh': googTest2.High, 'amznHigh': amznTest.High, 'msftHigh': msftTest.High, 'aaplHigh': aaplTest.High,
+    'googLow': googTest2.Low, 'amznLow': amznTest.Low, 'msftLow': msftTest.Low, 'aaplLow': aaplTest.Low
+})
+xTest2.drop([lenTest-1], inplace=True)
+yTrain2 = googTrain2.nextClose
+yTest2 = googTest2.nextClose
+
+linModel2 = skll.LinearRegression()
+linModel2.fit(xTrain2, yTrain2)
+linModel2.score(xTest2, yTest2)
+
+# The model predicts the following day's closing value of Google stock with 89.625% accuracy, based on previous day data
+# Not horribly bad, but not particularly useful either.  Maybe predictions within 5% would be worth acting on.
