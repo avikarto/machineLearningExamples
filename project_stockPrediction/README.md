@@ -21,3 +21,10 @@ sklearn.linear_model.score returned a 96.82% model accuracy when the trained mod
 Part 2: Predicting closing price of Google, based on previous-day behavior of Apple, Amazon, and Microsoft.  Effectively, this predicts "tomorrow"'s stock price based on "today"'s information - much more useful in real application than the result of part 1.
 
 sklearn.linear_model.score returned a 89.63% model accuracy when the trained model was run on the test data.
+
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+Part 3: Updating the results of Part 2 by implementing k-fold cross-validation testing with sklearn.linear_model.LinearRegression and sklearn.linear_model.TheilSenRegressor
