@@ -8,7 +8,9 @@ This project seeks to predict the closing price of Google stock based on the beh
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 
-Part 1: Predicting closing price of Google, based on same-day behavior of Apple, Amazon, and Microsoft
+Part 1:
+
+Predicting closing price of Google, based on same-day behavior of Apple, Amazon, and Microsoft
 
 A linear relationship is found between Google's closing price and the following variables - opening price, closing price, high price, and low price - for Amazon, Microsoft, and Apple (Apple's same-day behavior is fairly uncorrelated with Google's closing price, but still behaves somewhat linearly and is included in the model).
 
@@ -18,7 +20,9 @@ sklearn.linear_model.score returned a 96.82% model accuracy when the trained mod
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 
-Part 2: Predicting closing price of Google, based on previous-day behavior of Apple, Amazon, and Microsoft.  Effectively, this predicts "tomorrow"'s stock price based on "today"'s information - much more useful in real application than the result of part 1.
+Part 2:
+
+Predicting closing price of Google, based on previous-day behavior of Apple, Amazon, and Microsoft.  Effectively, this predicts "tomorrow"'s stock price based on "today"'s information - much more useful in real application than the result of part 1.
 
 sklearn.linear_model.score returned a 89.63% model accuracy when the trained model was run on the test data.
 
@@ -27,6 +31,8 @@ sklearn.linear_model.score returned a 89.63% model accuracy when the trained mod
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 
-Part 3: WORK IN PROGRESS
+Part 3:
 
 Updating the results of Part 2 by implementing k-fold cross-validation testing with sklearn.linear_model.LinearRegression and sklearn.linear_model.TheilSenRegressor
+
+Theil-Sen performs slightly better than the linear regression (94.4% vs 94.1% average score) across 5 folds.
