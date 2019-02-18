@@ -202,6 +202,8 @@ linModel2.score(xTest2, yTest2)
 # Let's see if we can get a better prediction with cross-validation.  We can start by combining all of the data.
 
 df3 = xTrain2.append(xTest2)
+df3X = df3.drop(columns=['googClose'])
+df3Y = df3['googClose']
 
 # %%
 # Train and test various models with k-fold cross-validation
@@ -220,11 +222,12 @@ scoresTheilSen = []
 # %%
 
 import sklearn.model_selection as sklms
-kf = sklms.KFold(n_splits=3)
+splits=3
+kf = sklms.KFold(n_splits=splits)
 
+savedPredictions = []
+savedActual = []
 for iTrain, iTest in kf.split(df3):
-    df3X = df3.drop(columns=['googClose'])
-    df3Y = df3['googClose']
     xTrain3 = []
     xTest3 = []
     yTrain3 = []
@@ -237,6 +240,9 @@ for iTrain, iTest in kf.split(df3):
         yTest3.append(df3Y.iloc[i])
     scoresLinear.append(getScore(linModel3, xTrain3, xTest3, yTrain3, yTest3))
     scoresTheilSen.append(getScore(TheilSen3, xTrain3, xTest3, yTrain3, yTest3))
+    # for analysis below...
+    savedPredictions.append(linModel3.predict(xTest3))
+    savedActual.append(yTest3)
 
 # %%
 
@@ -245,6 +251,20 @@ print('Average Linear model score: \n', np.average(scoresLinear), '\n')
 print('TheilSen model scores: \n', scoresTheilSen)
 print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 
+# %%
+# These scores seem far too accurate...is something going wrong?
+# I'll save the test data in each split (above) in and plot test data, predicted (linear) and actual
+
+for i in range(splits):
+    print('For split number ', i+1, '...')
+    plt.scatter(range(len(savedPredictions[i])), savedActual[i], color='blue', label='actual')
+    plt.scatter(range(len(savedPredictions[i])), savedPredictions[i], color='red', label='predicted')
+    plt.xlabel('index')
+    plt.ylabel('Google Closing Price')
+    plt.legend()
+    plt.show()
+
+# This appears to be predicting accurately?  Either I'm missing something or I'm a finiance god.  TBD.
 
 # WORK IN PROGRESS
 # TO BE CONTINUTED
