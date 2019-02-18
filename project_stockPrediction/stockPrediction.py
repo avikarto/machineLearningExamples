@@ -199,7 +199,8 @@ linModel2.score(xTest2, yTest2)
 ########### Part 3 #########
 ############################
 
-# Let's see if we can get a better prediction with cross-validation.  We can start by combining all of the data.
+# Let's see if we can get a better prediction with cross-validation and different models.
+# We can start by combining all of the data.
 
 df3 = xTrain2.append(xTest2)
 df3X = df3.drop(columns=['googClose'])
@@ -208,25 +209,25 @@ df3Y = df3['googClose']
 # %%
 # Train and test various models with k-fold cross-validation
 
-
-def getScore(model, xTrain, xTest, yTrain, yTest):
-    model.fit(xTrain, yTrain)
-    return model.score(xTest, yTest)
-
-# %%
-
 linModel3 = skll.LinearRegression()
 scoresLinear = []
 TheilSen3 = skll.TheilSenRegressor()  # a good multivariate regressor
 scoresTheilSen = []
 
+
+def getScore(model, xTrain, xTest, yTrain, yTest):
+    model.fit(xTrain, yTrain)
+    return model.score(xTest, yTest)
+
+
 # %%
 
 import sklearn.model_selection as sklms
 splits=5
-kf = sklms.KFold(n_splits=splits)
+kf = sklms.KFold(n_splits=splits, shuffle=False)
 
-savedPredictions = []
+savedPredictionsL = []
+savedPredictionsT = []
 savedActual = []
 for iTrain, iTest in kf.split(X=df3X, y=df3Y):
     xTrain3 = []
@@ -242,7 +243,8 @@ for iTrain, iTest in kf.split(X=df3X, y=df3Y):
     scoresLinear.append(getScore(linModel3, xTrain3, xTest3, yTrain3, yTest3))
     scoresTheilSen.append(getScore(TheilSen3, xTrain3, xTest3, yTrain3, yTest3))
     # for analysis below...
-    savedPredictions.append(linModel3.predict(xTest3))
+    savedPredictionsL.append(linModel3.predict(xTest3))
+    savedPredictionsT.append(TheilSen3.predict(xTest3))
     savedActual.append(yTest3)
 
 # %%
@@ -261,7 +263,8 @@ print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 for i in range(splits):
     print('For split number ', i+1, '...')
     plt.scatter(range(len(savedPredictions[i])), savedActual[i], color='blue', label='actual')
-    plt.scatter(range(len(savedPredictions[i])), savedPredictions[i], color='red', marker='+', label='predicted')
+    plt.scatter(range(len(savedPredictionsL[i])), savedPredictionsL[i], color='black', marker='_', label='Linear Prediction')
+    plt.scatter(range(len(savedPredictionsT[i])), savedPredictionsT[i], color='red', marker='|', label='TheilSen Prediction')
     plt.xlabel('index')
     plt.ylabel('Google Closing Price')
     plt.legend()
