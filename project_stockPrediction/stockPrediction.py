@@ -279,5 +279,4 @@ TheilSenModel2 = skll.TheilSenRegressor()
 TheilSenModel2.fit(xTrain2, yTrain2)
 TheilSenModel2.score(xTest2, yTest2)
 
-# WORK IN PROGRESS
-# TO BE CONTINUED
+# The new model is 90.02% accurate, compared to the 89.63% accuracy of the linear model.
