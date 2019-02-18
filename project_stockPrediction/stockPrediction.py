@@ -208,6 +208,7 @@ df3Y = df3['googClose']
 # %%
 # Train and test various models with k-fold cross-validation
 
+
 def getScore(model, xTrain, xTest, yTrain, yTest):
     model.fit(xTrain, yTrain)
     return model.score(xTest, yTest)
@@ -222,7 +223,7 @@ scoresTheilSen = []
 # %%
 
 import sklearn.model_selection as sklms
-splits=3
+splits=5
 kf = sklms.KFold(n_splits=splits)
 
 savedPredictions = []
@@ -258,7 +259,7 @@ print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 for i in range(splits):
     print('For split number ', i+1, '...')
     plt.scatter(range(len(savedPredictions[i])), savedActual[i], color='blue', label='actual')
-    plt.scatter(range(len(savedPredictions[i])), savedPredictions[i], color='red', label='predicted')
+    plt.scatter(range(len(savedPredictions[i])), savedPredictions[i], color='red', marker='+', label='predicted')
     plt.xlabel('index')
     plt.ylabel('Google Closing Price')
     plt.legend()
