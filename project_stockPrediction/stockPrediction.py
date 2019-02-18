@@ -194,3 +194,57 @@ linModel2.score(xTest2, yTest2)
 
 # The model predicts the following day's closing value of Google stock with 89.625% accuracy, based on previous day data
 # Not horribly bad, but not particularly useful either.  Maybe predictions within 5% would be worth acting on.
+
+############################
+########### Part 3 #########
+############################
+
+# Let's see if we can get a better prediction with cross-validation.  We can start by combining all of the data.
+
+df3 = xTrain2.append(xTest2)
+
+# %%
+# Train and test various models with k-fold cross-validation
+
+def getScore(model, xTrain, xTest, yTrain, yTest):
+    model.fit(xTrain, yTrain)
+    return model.score(xTest, yTest)
+
+# %%
+
+linModel3 = skll.LinearRegression()
+scoresLinear = []
+TheilSen3 = skll.TheilSenRegressor()  # a good multivariate regressor
+scoresTheilSen = []
+
+# %%
+
+import sklearn.model_selection as sklms
+kf = sklms.KFold(n_splits=3)
+
+for iTrain, iTest in kf.split(df3):
+    df3X = df3.drop(columns=['googClose'])
+    df3Y = df3['googClose']
+    xTrain3 = []
+    xTest3 = []
+    yTrain3 = []
+    yTest3 = []
+    for i in iTrain:
+        xTrain3.append(df3X.iloc[i])
+        yTrain3.append(df3Y.iloc[i])
+    for i in iTest:
+        xTest3.append(df3X.iloc[i])
+        yTest3.append(df3Y.iloc[i])
+    scoresLinear.append(getScore(linModel3, xTrain3, xTest3, yTrain3, yTest3))
+    scoresTheilSen.append(getScore(TheilSen3, xTrain3, xTest3, yTrain3, yTest3))
+
+# %%
+
+print('Linear model scores: \n', scoresLinear)
+print('Average Linear model score: \n', np.average(scoresLinear), '\n')
+print('TheilSen model scores: \n', scoresTheilSen)
+print('Average TheilSen model score: \n', np.average(scoresTheilSen))
+
+
+# WORK IN PROGRESS
+# TO BE CONTINUTED
