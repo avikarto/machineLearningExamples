@@ -202,9 +202,9 @@ linModel2.score(xTest2, yTest2)
 # Let's see if we can get a better prediction with cross-validation and different models.
 # We can start by combining all of the data.
 
-df3 = xTrain2.append(xTest2)
-df3X = df3.drop(columns=['googClose'])
-df3Y = df3['googClose']
+df3X = xTrain2.append(xTest2)
+df3Y = googTrain2['nextClose'].append(googTest2['nextClose'])
+
 
 # %%
 # Train and test various models with k-fold cross-validation
@@ -254,7 +254,8 @@ print('Average Linear model score: \n', np.average(scoresLinear), '\n')
 print('TheilSen model scores: \n', scoresTheilSen)
 print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 
-# These scores seem far too accurate...is something going wrong?
+# about 94% accuracy on both linear and theil-sen models with k-folds, compared to about
+# 90% on the 4-year training set and 1-year test set.  This is more of a difference than I'd have liked.
 
 # %%
 
@@ -262,7 +263,7 @@ print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 
 for i in range(splits):
     print('For split number ', i+1, '...')
-    plt.scatter(range(len(savedPredictions[i])), savedActual[i], color='blue', label='actual')
+    plt.scatter(range(len(savedPredictions[i])), savedActual[i], color='blue', label='actual', alpha=0.3)
     plt.scatter(range(len(savedPredictionsL[i])), savedPredictionsL[i], color='black', marker='_', label='Linear Prediction')
     plt.scatter(range(len(savedPredictionsT[i])), savedPredictionsT[i], color='red', marker='|', label='TheilSen Prediction')
     plt.xlabel('index')
@@ -270,7 +271,7 @@ for i in range(splits):
     plt.legend()
     plt.show()
 
-# This appears to be predicting pretty accurately?  Either I'm missing something or I'm a finiance god.  TBD.
+# This appears to be predicting pretty accurately, in both cases.
 
 # WORK IN PROGRESS
 # TO BE CONTINUED
