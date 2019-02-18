@@ -254,12 +254,11 @@ print('Average Linear model score: \n', np.average(scoresLinear), '\n')
 print('TheilSen model scores: \n', scoresTheilSen)
 print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 
-# about 94% accuracy on both linear and theil-sen models with k-folds, compared to about
-# 90% on the 4-year training set and 1-year test set.  This is more of a difference than I'd have liked.
+# about between about 90-99% accuracy on both linear and theil-sen models with k-folds.
+# This is a wider range than I'd have liked, but almost certainly due to small sample size.
 
 # %%
-
-# I'll save the test data in each split (above) in and plot test data, predicted (linear) and actual
+# Visualizing the predictions at each fold
 
 for i in range(splits):
     print('For split number ', i+1, '...')
