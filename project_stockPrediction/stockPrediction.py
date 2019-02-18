@@ -228,7 +228,7 @@ kf = sklms.KFold(n_splits=splits)
 
 savedPredictions = []
 savedActual = []
-for iTrain, iTest in kf.split(df3):
+for iTrain, iTest in kf.split(X=df3X, y=df3Y):
     xTrain3 = []
     xTest3 = []
     yTrain3 = []
@@ -252,8 +252,10 @@ print('Average Linear model score: \n', np.average(scoresLinear), '\n')
 print('TheilSen model scores: \n', scoresTheilSen)
 print('Average TheilSen model score: \n', np.average(scoresTheilSen))
 
-# %%
 # These scores seem far too accurate...is something going wrong?
+
+# %%
+
 # I'll save the test data in each split (above) in and plot test data, predicted (linear) and actual
 
 for i in range(splits):
@@ -265,7 +267,7 @@ for i in range(splits):
     plt.legend()
     plt.show()
 
-# This appears to be predicting accurately?  Either I'm missing something or I'm a finiance god.  TBD.
+# This appears to be predicting pretty accurately?  Either I'm missing something or I'm a finiance god.  TBD.
 
 # WORK IN PROGRESS
-# TO BE CONTINUTED
+# TO BE CONTINUED
