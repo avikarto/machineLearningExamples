@@ -272,5 +272,12 @@ for i in range(splits):
 
 # This appears to be predicting pretty accurately, in both cases.
 
+# %%
+# re-training the part 2 data set with the Theil-Sen model:
+
+TheilSenModel2 = skll.TheilSenRegressor()
+TheilSenModel2.fit(xTrain2, yTrain2)
+TheilSenModel2.score(xTest2, yTest2)
+
 # WORK IN PROGRESS
 # TO BE CONTINUED
