@@ -27,4 +27,6 @@ sklearn.linear_model.score returned a 89.63% model accuracy when the trained mod
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 
-Part 3: Updating the results of Part 2 by implementing k-fold cross-validation testing with sklearn.linear_model.LinearRegression and sklearn.linear_model.TheilSenRegressor
+Part 3: WORK IN PROGRESS
+
+Updating the results of Part 2 by implementing k-fold cross-validation testing with sklearn.linear_model.LinearRegression and sklearn.linear_model.TheilSenRegressor
