@@ -37,3 +37,5 @@ Part 3:
 Updating the results of Part 2 by implementing k-fold cross-validation testing with sklearn.linear_model.LinearRegression and sklearn.linear_model.TheilSenRegressor
 
 Theil-Sen performs slightly better than the linear regression (94.4% vs 94.1% average score) across 5 folds.
+
+Re-fitting the data set from Part 2 with the Theil-Sen regressor returns a 90.02% predictor accuracy, an improvement over the linear regression model used in Part 2.
