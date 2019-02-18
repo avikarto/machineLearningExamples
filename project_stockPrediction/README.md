@@ -1,6 +1,7 @@
 # stockPrediction
 
-This project seeks to predict the closing price of Google stock based on the behavior of Apple, Amazon, and Microsoft for a given day.  
+This project seeks to predict the closing price of Google stock based on the behavior of Apple, Amazon, and Microsoft for a given day.
+
 4 years of training data (Jan 1 2014 - Jan 1 2018) was impored from fininace.yahoo.com to train the linear regression, which was tested against one year of test data (Jan 2 2018 - Jan 2 2019), for each of the 4 stocks.
 
 
